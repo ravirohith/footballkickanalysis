@@ -1,12 +1,12 @@
 clear all
-st=2;
-ed=15;
+st=19;
+ed=23;
 n=ed-st+1;
-h=390;
-w=640;
-%h=720;
-%w=1280;
-backgrnd = (imread('y (1).png'));
+%h=390;
+%w=640;
+h=720;
+w=1280;
+backgrnd = (imread('x (1).jpg'));
 %backgrnd = (imread('bgz.jpg'));
 %{
 for i=1:4
@@ -28,23 +28,23 @@ end
 %}
 
 for i=1:ed
-    filename=sprintf('y (%d).png',i);
+    filename=sprintf('x (%d).jpg',i);
     %filename=sprintf('z (%d).jpg',i);
-    test(:,:,:,i)=imread(filename);
+    test(:,:,:,i)=(imread(filename));
 end
 
 for i=st:ed
-    filename = sprintf('y (%d).png', i);
+    filename = sprintf('x (%d).jpg', i);
 %filename = sprintf('z (%d).jpg', i);
 Im(:,:,:,i-st+1) = double((imread(filename)-backgrnd));
 end
-MHI(:,:,n) =zeros(480,w);
+MHI(:,:,n) =zeros(720,1280);
 for i=2:n
     imgt = abs(Im(:,:,:,i)-Im(:,:,:,i-1));
     %imgt = bwareaopen(imgt,10);
     for j=1:h
         for k=1:w
-            if(imgt(j,k,1)>20 && imgt(j,k,2)>20 && imgt(j,k,3)>20)
+            if(imgt(j,k,1)>50 && imgt(j,k,2)>50 && imgt(j,k,3)>50)
                 MHI(j,k,i)=i;
             else
                 MHI(j,k,i)=max(0,MHI(j,k,i-1));
@@ -60,11 +60,11 @@ pImg = MHI(:,:,n);
 colormap('gray');
 hold on;
 %%
-pos=zeros(14,2);
+pos=ones(27,2)*999;
 for i=(h/2):h
     for j=1:w
         if(pImg(i,j)~=0)
-            if(pos(pImg(i,j),1)<i)
+            if(pos(pImg(i,j),2)>j)
                 pos(pImg(i,j),1)=i;
                 pos(pImg(i,j),2)=j;
             end
